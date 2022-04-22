@@ -16,7 +16,7 @@
     "android-clean:build": "cd android && ./gradlew clean",
     "android-clean:emulator": "emulator -avd Pixel_2_API_29 -wipe-data",
     "android-clean:all": "npm run android-clean:build && npm run android-clean:emulator",
-    "ios-debug": "react-native run-ios --scheme=\"newborntracker Development\" --configuration=\"Development Debug\"",
+    "ios-debug": "react-native run-ios --scheme=\"NewbornTracker Development\" --configuration=\"Development Debug\"",
     "ios-debug:staging": "react-native run-ios --scheme=\"HelloDV Staging\" --configuration=\"Staging Debug\"",
     "ios-debug:rc": "react-native run-ios --scheme=\"HelloDV RC\" --configuration=\"RC Debug\"",
     "ios-debug:production": "react-native run-ios --scheme=\"HelloDV Production\" --configuration=\"Production Debug\"",

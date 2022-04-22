@@ -1,0 +1,177 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+fastlane_require 'dotenv'
+
+STAGING_APK_PATH="./app/build/outputs/apk/staging/release/app-staging-release.apk"
+RC_APK_PATH="./app/build/outputs/apk/rc/release/app-rc-release.apk"
+PRODUCTION_AAB_PATH="./app/build/outputs/bundle/productionRelease/app-production-release.aab"
+
+
+before_all do
+  # Import secrets from local folder
+  Dotenv.overload '../../.env.secrets'
+end
+
+default_platform(:android)
+
+# It is not possible to submit two app bundles with the same version code.
+# This function loops through the different tracks and return the highest version code.
+def latest_googleplay_version_code
+
+  version_codes = []
+
+  # Available tracks. Unused tracks can be removed to speed up the process.
+  tracks = ['production', 'beta', 'alpha', 'internal']
+
+  # Loop through the different tracks.
+  # The try/catch is necessary because google_play_track_version_codes is not
+  # smart enough to return 0 or something in case of missing track.
+  tracks.each { |track|
+    begin
+      track_codes = google_play_track_version_codes(track: track)
+      version_codes.concat(track_codes)
+    rescue
+      version_codes.push 0
+    end
+  }
+
+  UI.message "Current version code on Play Store: " + version_codes.max.to_s
+
+  # Returns the highest version code
+  return version_codes.max
+end
+
+def upload_to_appcenter_app(app_name, file)
+  appcenter_upload(
+    api_token: ENV["APPCENTER_API_TOKEN"],
+    owner_name: ENV["APPCENTER_OWNER_NAME"],
+    owner_type: ENV["APPCENTER_OWNER_TYPE"],
+    app_name: app_name,
+    file: file,
+    destinations: '*',
+    notify_testers: true
+  )
+end
+
+def build(task, version_code, version_name = nil)
+
+  # Add a clean task before our task
+  clean_before_task = "clean #{task}"
+
+  # Make sure version_code is a string before passing it as a property
+  version_code_string = Integer(version_code).to_s
+  UI.header "Start building..."
+  UI.success "Version code is #{version_code_string}"
+
+  properties = {}
+  properties["versionCode"] = version_code_string
+
+  if (version_name) 
+    properties["versionName"] = version_name
+  end
+
+  gradle(
+    task: clean_before_task,
+    properties: properties
+    )
+
+end
+
+def get_version_name
+    # For production build we use the latest tag from Github
+    version_name = last_git_tag
+
+    if !version_name
+      version_name = "0.1.0"
+    end
+
+    return version_name
+
+end
+
+platform :android do
+
+  ###########################################
+  # Test
+  ###########################################
+
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  ###########################################
+  # Build
+  ###########################################
+
+  desc "Build Staging"
+  lane :build_staging do
+
+    # We use number of commits to set the build number
+    version_code = number_of_commits(all: true)
+    build("assembleStagingRelease", version_code)
+  
+  end
+
+  desc "Build RC"
+  lane :build_rc do
+
+    # We use number of commits to set the build number
+    version_code = number_of_commits(all: true)
+    build("assembleRcRelease", version_code)
+  
+  end
+
+  desc "Build Production"
+  lane :build_production do
+
+    version_name = get_version_name()
+
+    # For production build we use latest Google Play version
+    version_code = latest_googleplay_version_code + 1
+    build("bundleProductionRelease", version_code, version_name)
+  
+  end
+
+  ###########################################
+  # Deploy
+  ###########################################
+
+  desc "Submit a new Staging Build to App Center"
+  lane :deploy_staging do
+    upload_to_appcenter_app("Android-Hello-DV-Staging", STAGING_APK_PATH)
+  end
+
+  desc "Submit a new RC Build to App Center"
+  lane :deploy_rc do
+    upload_to_appcenter_app("Android-Hello-DV-Release-Candidate", RC_APK_PATH)
+  end
+
+  desc "Deploy a new production version to the Google Play"
+  lane :deploy_store do
+
+    version_name = get_version_name()
+
+    upload_to_play_store(
+      version_name: version_name,
+      track: "production",
+      track_promote_to: "production",
+      release_status: "draft",
+      skip_upload_apk: true,
+      aab: PRODUCTION_AAB_PATH
+    )
+  end
+end

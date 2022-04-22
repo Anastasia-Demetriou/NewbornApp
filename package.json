@@ -1,0 +1,75 @@
+{
+  "name": "hellodv",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "android-debug": "react-native run-android --variant=developmentDebug --appIdSuffix=dev",
+    "android-debug:staging": "react-native run-android --variant=stagingDebug --appIdSuffix=staging",
+    "android-debug:rc": "react-native run-android --variant=rcDebug --appIdSuffix=rc",
+    "android-debug:production": "react-native run-android --variant=productionDebug",
+    "android-build:production": "cd android && fastlane build_store",
+    "android-build:rc": "cd android && fastlane build_rc",
+    "android-build:staging": "cd android && fastlane build_staging",
+    "android-deploy:production": "cd android && fastlane deploy_store",
+    "android-deploy:rc": "cd android && fastlane deploy_rc",
+    "android-deploy:staging": "cd android && fastlane deploy_staging",
+    "android-clean:build": "cd android && ./gradlew clean",
+    "android-clean:emulator": "emulator -avd Pixel_2_API_29 -wipe-data",
+    "android-clean:all": "npm run android-clean:build && npm run android-clean:emulator",
+    "ios-debug": "react-native run-ios --scheme=\"newborntracker Development\" --configuration=\"Development Debug\"",
+    "ios-debug:staging": "react-native run-ios --scheme=\"HelloDV Staging\" --configuration=\"Staging Debug\"",
+    "ios-debug:rc": "react-native run-ios --scheme=\"HelloDV RC\" --configuration=\"RC Debug\"",
+    "ios-debug:production": "react-native run-ios --scheme=\"HelloDV Production\" --configuration=\"Production Debug\"",
+    "ios-build:production": "cd ios && fastlane build_store",
+    "ios-build:rc": "cd ios && fastlane build_rc",
+    "ios-build:staging": "cd ios && fastlane build_staging",
+    "ios-deploy:production": "cd ios && fastlane deploy_store",
+    "ios-deploy:rc": "cd ios && fastlane deploy_rc",
+    "ios-deploy:staging": "cd ios && fastlane deploy_staging",
+    "ios-clean:build": "cd ios && fastlane run clean_build_artifacts",
+    "ios-clean:simulator": "cd ios && fastlane run reset_simulator_contents",
+    "ios-clean:all": "npm run ios-clean:build && npm run ios-clean:simulator",
+    "check-fastlane": "cd ios && fastlane run echo message:\"It works!\"",
+    "update-bundle-id": "node ./scripts/bundle-id-replace.js",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+  },
+  "dependencies": {
+    "expo-linear-gradient": "^11.0.3",
+    "react": "17.0.2",
+    "react-native": "0.66.1",
+    "react-native-config": "^1.4.5",
+    "react-native-device-info": "^8.4.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.15.8",
+    "@babel/runtime": "^7.15.4",
+    "@react-native-community/eslint-config": "^3.0.1",
+    "@types/jest": "^27.0.2",
+    "@types/react-native": "^0.65.9",
+    "@types/react-test-renderer": "^17.0.1",
+    "babel-jest": "^27.3.1",
+    "eslint": "^8.0.1",
+    "jest": "^27.3.1",
+    "metro-react-native-babel-preset": "^0.66.2",
+    "react-native-codegen": "^0.0.8",
+    "react-test-renderer": "17.0.2",
+    "replace-in-file": "^6.3.2",
+    "typescript": "^4.4.4"
+  },
+  "resolutions": {
+    "@types/react": "^17"
+  },
+  "jest": {
+    "preset": "react-native",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  }
+}

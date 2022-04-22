@@ -1,0 +1,60 @@
+name: Android Staging
+on: 
+  push:
+    branches:
+      - 'main'
+    tags-ignore:
+      - '**'
+jobs:
+  release-android:
+    name: Android Staging
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "2.7.4"
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Install Fastlane
+        run: cd android && bundle install && cd ..
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install packages
+        run: npm install
+      
+      # Decrypt keystore from secrets and create a keystore.properties file
+      - name: Set up keystore
+        run: |
+              echo "$ANDROID_RELEASE_KEYSTORE" | base64 --decode > android/app/release.keystore
+              cat >> "android/keystore.properties" <<EOF
+              storePassword=$ANDROID_KEYSTORE_PASSWORD
+              keyPassword=$ANDROID_KEY_ALIAS_PASSWORD
+              keyAlias=$ANDROID_KEY_ALIAS_USERNAME
+              storeFile=release.keystore
+              EOF
+        env:
+          ANDROID_RELEASE_KEYSTORE: ${{secrets.ANDROID_RELEASE_KEYSTORE}}
+          ANDROID_KEYSTORE_PASSWORD: ${{secrets.ANDROID_KEYSTORE_PASSWORD}}
+          ANDROID_KEY_ALIAS_PASSWORD: ${{secrets.ANDROID_KEY_ALIAS_PASSWORD}}
+          ANDROID_KEY_ALIAS_USERNAME: ${{secrets.ANDROID_KEY_ALIAS_USERNAME}}
+      - name: Fastlane Build Staging
+        run: cd android && fastlane build_staging
+      - name: Fastlane Deploy Staging to Appcenter
+        run: cd android && fastlane deploy_staging
+        env:
+          APPCENTER_API_TOKEN: ${{secrets.APPCENTER_API_TOKEN}}
+          APPCENTER_OWNER_NAME: ${{secrets.APPCENTER_OWNER_NAME}}
+          APPCENTER_OWNER_TYPE: ${{secrets.APPCENTER_OWNER_TYPE}}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: app-staging-release
+          path: android/app/build/outputs/apk/staging/release/app-staging-release.apk

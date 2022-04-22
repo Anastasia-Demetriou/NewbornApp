@@ -1,0 +1,60 @@
+name: Android Production
+on:
+  release:
+    types: [published]
+    branches:
+      - 'release'
+jobs:
+  release-android:
+    name: Android Production
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "2.7.4"
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Install Fastlane
+        run: cd android && bundle install && cd ..
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install packages
+        run: npm install
+      - name: Set up keystore
+        run: |
+              echo "$ANDROID_RELEASE_KEYSTORE" | base64 --decode > android/app/release.keystore
+              cat >> "android/keystore.properties" <<EOF
+              storePassword=$ANDROID_KEYSTORE_PASSWORD
+              keyPassword=$ANDROID_KEY_ALIAS_PASSWORD
+              keyAlias=$ANDROID_KEY_ALIAS_USERNAME
+              storeFile=release.keystore
+              EOF
+        env:
+          ANDROID_RELEASE_KEYSTORE: ${{secrets.ANDROID_RELEASE_KEYSTORE}}
+          ANDROID_KEYSTORE_PASSWORD: ${{secrets.ANDROID_KEYSTORE_PASSWORD}}
+          ANDROID_KEY_ALIAS_PASSWORD: ${{secrets.ANDROID_KEY_ALIAS_PASSWORD}}
+          ANDROID_KEY_ALIAS_USERNAME: ${{secrets.ANDROID_KEY_ALIAS_USERNAME}}
+      - name: Decrypt Google Play Service Account JSON
+        run: |
+          cd android
+          echo "$ANDROID_GOOGLE_PLAY_SERVICE_ACCOUNT_JSON" > google_play_service_account.json.b64
+          base64 -d -i google_play_service_account.json.b64 > google_play_service_account.json
+        env:
+          ANDROID_GOOGLE_PLAY_SERVICE_ACCOUNT_JSON: ${{secrets.ANDROID_GOOGLE_PLAY_SERVICE_ACCOUNT_JSON}}
+      - name: Fastlane Build Production
+        run: cd android && fastlane build_production
+      - name: Fastlane Deploy Production to Play Store
+        run: cd android && fastlane deploy_store
+      - uses: actions/upload-artifact@v2
+        with:
+          name: app-production-release
+          path: android/app/build/outputs/bundle/productionRelease/app-production-release.aab

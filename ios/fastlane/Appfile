@@ -1,0 +1,24 @@
+# app_identifier("[[APP_IDENTIFIER]]") # The bundle identifier of your app
+# apple_id("[[APPLE_ID]]") # Your Apple email address
+
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
+
+# These variable should be in the CI/CD tool only to prevent devs from accidentally
+# deploy something they are not supposed to deploy
+
+# DO NOT CHANGE THE BUNDLE IDENTIFIER HERE
+# Use `npm run update-bundle-id` instead.
+# See documentation for more details.
+app_identifier "com.newborntracker"
+
+# Apple ID is the email used to authenticate to the Apple Portal
+apple_id "paolo.sinelli@bcgdv.com" # CHANGE ME
+
+# Apple Team ID can be found on the top-right corner on
+# this page https://developer.apple.com/account/resources/identifiers/list
+team_id "52R64836W4" # CHANGE ME
+
+
+

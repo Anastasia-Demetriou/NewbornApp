@@ -1,0 +1,56 @@
+name: iOS Staging
+on: 
+  push:
+    branches:
+      - 'main'
+    tags-ignore:
+      - '**'
+jobs:
+  release-ios:
+    name: iOS Staging
+    runs-on: macos-latest
+    steps:
+      - name: Checkout main repo
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v1
+        with:
+          node-version: "14.x"
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "2.7.4"
+          bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+      - name: Install Fastlane
+        run: cd ios && bundle install && cd ..
+      - uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+      - name: Install packages
+        run: npm install
+      - uses: actions/cache@v2
+        with:
+          path: Pods
+          key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pods-
+      - name: Install pods
+        run: cd ios && pod install
+      - name: Fastlane Build Staging
+        run: cd ios && fastlane build_staging
+        env:
+          MATCH_PASSWORD: ${{secrets.FASTLANE_MATCH_PASSWORD}}
+          MATCH_GIT_BASIC_AUTHORIZATION: ${{secrets.FASTLANE_MATCH_GIT_BASIC_AUTHORIZATION}}
+      - name: Fastlane Deploy Staging to Appcenter
+        run: cd ios && fastlane deploy_staging
+        env:
+          APPCENTER_API_TOKEN: ${{secrets.APPCENTER_API_TOKEN}}
+          APPCENTER_OWNER_NAME: ${{secrets.APPCENTER_OWNER_NAME}}
+          APPCENTER_OWNER_TYPE: ${{secrets.APPCENTER_OWNER_TYPE}}
+      - uses: actions/upload-artifact@v2
+        with:
+          name: app-staging-release
+          path: ios/build/ipa/staging/NewbornTracker.ipa

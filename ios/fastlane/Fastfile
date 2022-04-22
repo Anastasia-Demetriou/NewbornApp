@@ -1,0 +1,229 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+fastlane_require 'dotenv'
+
+APP_NAME="NewbornTracker"
+
+XCODEPROJ_FILE="#{APP_NAME}.xcodeproj"
+XWORKSPACE_FILE="#{APP_NAME}.xcworkspace"
+
+IPA_BUILD_BASE_DIR="build/ipa"
+IPA_APP_NAME="#{APP_NAME}.ipa"
+
+before_all do
+  Dotenv.overload '../../.env.secrets'
+end
+
+def upload_to_appcenter_app(app_name, file)
+  appcenter_upload(
+    api_token: ENV["APPCENTER_API_TOKEN"],
+    owner_name: ENV["APPCENTER_OWNER_NAME"],
+    owner_type: ENV["APPCENTER_OWNER_TYPE"],
+    app_name: app_name,
+    file: file,
+    destinations: '*',
+    notify_testers: true
+  )
+end
+
+def default_app_identifier
+  identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+  if identifier == ""
+    raise "App identifier is missing in Appfile"
+  end
+
+  identifier
+end
+
+platform :ios do
+
+  ###########################################
+  # Helpers
+  ###########################################
+
+  desc 'Generate all identifiers required for signing'
+  lane :produce_identifiers do
+
+    identifiers_map = {
+      "Development": "#{default_app_identifier}.dev",
+      "Staging": "#{default_app_identifier}.staging",
+      "RC": "#{default_app_identifier}.rc",
+      "Production": "#{default_app_identifier}"
+    }
+
+    identifiers_map.each { |key, value|
+      produce(
+        app_name: "#{APP_NAME} #{key}",
+        app_identifier: value,
+        skip_itc: true
+        )
+    }
+
+  end
+
+  desc 'Fetch certificates and provisioning profiles'
+  lane :certificates do
+    match(
+      app_identifier: [
+        default_app_identifier, 
+        "#{default_app_identifier}.staging",
+        "#{default_app_identifier}.dev",
+        "#{default_app_identifier}.rc"
+      ])
+  end
+
+  ###########################################
+  # Test
+  ###########################################
+
+  desc "Runs all the tests"
+  lane :test do
+    gradle(task: "test")
+  end
+
+  ###########################################
+  # Build
+  ###########################################
+
+  desc "Build a new Staging Build to App Center"
+  lane :build_staging do
+    setup_ci if is_ci
+
+    match(
+      type: "appstore",
+      app_identifier: "#{default_app_identifier}.staging",
+      readonly: true,
+      verbose: true
+      )
+
+    # We use number of commits to set the build number
+    version_code = number_of_commits(all: true)
+
+    increment_build_number(
+      xcodeproj: XCODEPROJ_FILE,
+      build_number: version_code
+      )
+      
+    build_app(
+      scheme: "NewbornTracker Staging",
+      workspace: XWORKSPACE_FILE,
+      configuration: "Staging Release",
+      output_directory: "#{IPA_BUILD_BASE_DIR}/staging",
+      clean: true
+      )
+  
+  end
+
+  desc "Build a new RC Build to App Center"
+  lane :build_rc do
+
+    setup_ci if is_ci
+
+    match(
+      type: "appstore",
+      app_identifier: "#{default_app_identifier}.rc",
+      readonly: true
+      )
+
+    # We use number of commits to set the build number
+    version_code = number_of_commits(all: true)
+
+    increment_build_number(
+      xcodeproj: XCODEPROJ_FILE,
+      build_number: version_code
+      )
+      
+    build_app(
+      scheme: "NewbornTracker RC",
+      workspace: XWORKSPACE_FILE,
+      configuration: "RC Release",
+      output_directory: "#{IPA_BUILD_BASE_DIR}/rc",
+      clean: true,
+      export_method: "app-store"
+      )
+  
+  end
+  
+  desc "Build a new Production Build to Apple Store"
+  lane :build_production do
+
+    setup_ci if is_ci
+
+    match(
+      type: "appstore",
+      app_identifier: "#{default_app_identifier}",
+      readonly: true
+      )
+
+    begin
+      version_code = app_store_build_number(
+        app_identifier: "#{default_app_identifier}"
+      )
+    rescue
+      version_code = 1
+    end
+
+    increment_build_number(
+      xcodeproj: XCODEPROJ_FILE,
+      build_number: version_code
+      )
+      
+    build_app(
+      scheme: "NewbornTracker Production",
+      workspace: XWORKSPACE_FILE,
+      configuration: "Production Release",
+      output_directory: "#{IPA_BUILD_BASE_DIR}/production",
+      clean: true,
+      export_method: "app-store"
+      )
+  
+  end
+
+  ###########################################
+  # Deploy
+  ###########################################
+
+  desc "Submit a new Staging Build to App Center"
+  lane :deploy_staging do
+    ipa_path = "#{IPA_BUILD_BASE_DIR}/staging/#{IPA_APP_NAME}"
+    upload_to_appcenter_app("iOS-Hello-DV-Staging", ipa_path)
+  end
+
+  desc "Submit a new RC Build to App Center"
+  lane :deploy_rc do
+    ipa_path = "#{IPA_BUILD_BASE_DIR}/rc/#{IPA_APP_NAME}"
+    upload_to_appcenter_app("iOS-Hello-DV-RC", ipa_path)
+  end
+
+  desc "Submit a new Production Build to Apple Store"
+  lane :deploy_store do
+    ipa_path = "#{IPA_BUILD_BASE_DIR}/production/#{IPA_APP_NAME}"
+
+    upload_to_app_store(
+      ipa: ipa_path,
+      submit_for_review: false,
+      automatic_release: false,
+      force: true, # Skip HTMl report verification
+      skip_metadata: true,
+      skip_screenshots: true,
+      skip_binary_upload: true
+    )
+
+  end
+
+end

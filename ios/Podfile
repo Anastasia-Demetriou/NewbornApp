@@ -1,0 +1,48 @@
+require_relative '../node_modules/react-native/scripts/react_native_pods'
+require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
+
+platform :ios, '11.0'
+
+project 'NewbornTracker',
+  'Development Debug' => :debug,
+  'Staging Debug' => :debug,
+  'RC Debug' => :debug,
+  'Production Debug' => :debug,
+  'Development Release' => :release,
+  'Staging Release' => :release,
+  'RC Release' => :release,
+  'Production Release' => :release
+
+target 'NewbornTracker' do
+  config = use_native_modules!
+
+  pod 'react-native-config/Extension', :path => '../node_modules/react-native-config'
+
+  use_react_native!(
+    :path => config[:reactNativePath],
+    # to enable hermes on iOS, change `false` to `true` and then install pods
+    :hermes_enabled => false
+  )
+
+  target 'NewbornTrackerTests' do
+    inherit! :complete
+    # Pods for testing
+  end
+
+  # Enables Flipper.
+  #
+  # Note that if you have use_frameworks! enabled, Flipper will not work and
+  # you should disable the next line.
+  use_flipper!(
+    configurations: [
+        'Development Debug',
+        'Staging Debug',
+        'RC Debug',
+        'Production Debug'
+  ])
+
+  post_install do |installer|
+    react_native_post_install(installer)
+    __apply_Xcode_12_5_M1_post_install_workaround(installer)
+  end
+end

@@ -21,6 +21,8 @@ import {
 } from 'react-native'
 
 import { Colors } from 'react-native/Libraries/NewAppScreen'
+import DatePickerApp from './src/DatePickerApp'
+import { Provider as PaperProvider } from 'react-native-paper'
 
 import Config from 'react-native-config'
 console.log(Config)
@@ -79,14 +81,7 @@ const App = () => {
             {'\n'}
           </Section>
         </View>
-        <TextInput
-          style={{
-            height: 40,
-            borderColor: 'gray',
-            borderWidth: 1,
-          }}
-          defaultValue='You can type in me'
-        />
+        <DatePickerApp mode='date' />
       </ScrollView>
     </SafeAreaView>
   )

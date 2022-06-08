@@ -1,27 +1,79 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Text, View } from 'react-native'
+import { Button, Text, View, TouchableOpacity } from 'react-native'
 
 import DatePicker from 'react-native-date-picker'
 import moment from 'moment'
+import styled from 'styled-components/native'
+import { intervalToDuration } from 'date-fns'
 
 import BabyChecklist from './BabyChecklist'
+//import { Section } from 'react-native-paper/lib/typescript/components/List/List'
 
 export default function DatePickerApp() {
   const [date, setDate] = useState(new Date())
   const [open, setOpen] = useState(false)
 
-  const onChange = (event, seletedDate) => {
-    setDate(moment(selectedDate))
-  }
-
   const calculateAge = (date) => {
-    const currentDate = moment().diff(date, 'days')
+    //const currentDate = moment().diff(date, 'days')
+
+    const currentDate = intervalToDuration({
+      start: new Date(date),
+      end: new Date(),
+    })
     return currentDate
   }
 
+  const calculateWeek = (date) => {
+    const currentDate = moment().diff(date, 'weeks')
+    return currentDate
+  }
+
+  const calculateMonth = (date) => {
+    const currentDate = moment().diff(date, 'months')
+    return currentDate
+  }
+
+  const StyledScrollView = styled.ScrollView`
+    flex: 1;
+    width: 100%;
+  `
+
+  const StyledView = styled.View`
+    flex-direction: column;
+    align-items: flex-start;
+    margin-left: 5px;
+    margin-right: 5px;
+    padding: 10px;
+  `
+  const StyledBorder = styled.View`
+    border: 2px;
+    border-color: #dedede;
+    border-style: solid;
+    border-radius: 5px;
+    width: 100%;
+    background: #f5fcff;
+  `
+  const TouchableOpacity = styled.TouchableOpacity`
+    width: 100%;
+  `
+
+  const StyledCheckList = styled.View`
+    padding: 5px;
+  `
+
+  //Not working
+  const StyledSectionHeader = styled.View`
+    font-size: 14px;
+    font-weight: 600;
+  `
+
+  const ageObject = calculateAge(date)
+
   return (
     <>
-      <Button title='Select Date' onPress={() => setOpen(true)} />
+      <TouchableOpacity>
+        <Button title='Select Date' onPress={() => setOpen(true)} />
+      </TouchableOpacity>
       <DatePicker
         modal
         open={open}
@@ -31,7 +83,6 @@ export default function DatePickerApp() {
         locale='en_GB'
         minimumDate={new Date(moment().subtract(2, 'years').format())}
         maximumDate={new Date()}
-        onChange={onChange}
         onConfirm={(date) => {
           setOpen(false)
           setDate(date)
@@ -41,20 +92,37 @@ export default function DatePickerApp() {
           setOpen(false)
         }}
       />
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginLeft: '3%',
-        }}
-      >
-        <Text>Your Baby's date of birth is: {date.toDateString()}</Text>
-        <Text> Your baby is {calculateAge(date)} days old </Text>
-        <B1> TimeLline </B1>
-        {BabyChecklist.filter((item) => item.day < 14).map((filteredItem) => {
-          return <Text>{filteredItem.name}</Text>
-        })}
-      </View>
+
+      <Text>Your Baby's date of birth is: {date.toDateString()}</Text>
+      <Text>
+        Your baby is {ageObject.years} year {ageObject.months} months and{' '}
+        {ageObject.days} days old.
+      </Text>
+
+      {/* <B1> TimeLline </B1> */}
+      {BabyChecklist.filter((item) => item.day < 60).map((filteredItem) => {
+        return (
+          <StyledScrollView>
+            <StyledView>
+              <TouchableOpacity>
+                <StyledBorder>
+                  <StyledCheckList>
+                    <StyledSectionHeader>
+                      <Text>{filteredItem.name}</Text>
+                    </StyledSectionHeader>
+                  </StyledCheckList>
+                  <StyledCheckList>
+                    <Text>{filteredItem.range}</Text>
+                  </StyledCheckList>
+                  <StyledCheckList>
+                    <Text>{filteredItem.description}</Text>
+                  </StyledCheckList>
+                </StyledBorder>
+              </TouchableOpacity>
+            </StyledView>
+          </StyledScrollView>
+        )
+      })}
     </>
   )
 }

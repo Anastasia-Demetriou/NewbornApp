@@ -23,8 +23,10 @@ import {
 import { Colors } from 'react-native/Libraries/NewAppScreen'
 import DatePickerApp from './src/DatePickerApp'
 import { Provider as PaperProvider } from 'react-native-paper'
+import LinearGradient from 'react-native-linear-gradient'
 
 import Config from 'react-native-config'
+import { blue100 } from 'react-native-paper/lib/typescript/styles/colors'
 console.log(Config)
 
 const Section: React.FC<{
@@ -43,46 +45,46 @@ const Section: React.FC<{
       >
         {title}
       </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}
-      >
-        {children}
-      </Text>
+      {
+        <Text
+          style={[
+            styles.sectionDescription,
+            {
+              color: isDarkMode ? Colors.light : Colors.dark,
+            },
+          ]}
+        >
+          {children}
+        </Text>
+      }
     </View>
   )
 }
 
 const App = () => {
-  const isDarkMode = useColorScheme() === 'dark'
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  }
+  // const isDarkMode = useColorScheme() === 'dark'
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        contentInsetAdjustmentBehavior='automatic'
-        style={backgroundStyle}
-      >
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}
-        >
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#e7e9eb' }}>
+      {/* <LinearGradient
+        colors={['#077845', '#077845']}
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      > */}
+      <ScrollView contentInsetAdjustmentBehavior='automatic'>
+        <View>
           <Section title='Newborn Planner'>
             hello, enter your baby's dob:
             {'\n'}
           </Section>
         </View>
+
         <DatePickerApp mode='date' />
       </ScrollView>
+      {/* </LinearGradient> */}
     </SafeAreaView>
   )
 }
@@ -93,13 +95,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   sectionTitle: {
-    fontSize: 24,
+    fontSize: 25,
     fontWeight: '600',
+    color: 'green',
   },
   sectionDescription: {
+    borderBottomColor: 'red',
     marginTop: 8,
-    fontSize: 18,
+    fontSize: 28,
     fontWeight: '400',
+    color: 'pink',
   },
   highlight: {
     fontWeight: '700',

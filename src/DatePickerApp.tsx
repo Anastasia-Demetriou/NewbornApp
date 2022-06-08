@@ -7,7 +7,7 @@ import styled from 'styled-components/native'
 import { intervalToDuration } from 'date-fns'
 
 import BabyChecklist from './BabyChecklist'
-//import { Section } from 'react-native-paper/lib/typescript/components/List/List'
+import ToggleSwitch from './ToggleSwitch'
 
 export default function DatePickerApp() {
   const [date, setDate] = useState(new Date())
@@ -20,16 +20,6 @@ export default function DatePickerApp() {
       start: new Date(date),
       end: new Date(),
     })
-    return currentDate
-  }
-
-  const calculateWeek = (date) => {
-    const currentDate = moment().diff(date, 'weeks')
-    return currentDate
-  }
-
-  const calculateMonth = (date) => {
-    const currentDate = moment().diff(date, 'months')
     return currentDate
   }
 
@@ -100,7 +90,7 @@ export default function DatePickerApp() {
       </Text>
 
       {/* <B1> TimeLline </B1> */}
-      {BabyChecklist.filter((item) => item.day < 60).map((filteredItem) => {
+      {BabyChecklist.filter((item) => item.day < 14).map((filteredItem) => {
         return (
           <StyledScrollView>
             <StyledView>
@@ -109,6 +99,7 @@ export default function DatePickerApp() {
                   <StyledCheckList>
                     <StyledSectionHeader>
                       <Text>{filteredItem.name}</Text>
+                      <ToggleSwitch></ToggleSwitch>
                     </StyledSectionHeader>
                   </StyledCheckList>
                   <StyledCheckList>

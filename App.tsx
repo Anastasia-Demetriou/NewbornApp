@@ -27,6 +27,9 @@ import LinearGradient from 'react-native-linear-gradient'
 
 import Config from 'react-native-config'
 import { blue100 } from 'react-native-paper/lib/typescript/styles/colors'
+import ToggleSwitch from './src/ToggleSwitch'
+import Switch from './src/Switch'
+
 console.log(Config)
 
 const Section: React.FC<{

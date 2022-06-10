@@ -6,9 +6,6 @@ import moment from 'moment'
 import styled from 'styled-components/native'
 import { intervalToDuration } from 'date-fns'
 
-import BabyChecklist from './BabyChecklist'
-import ToggleSwitch from './ToggleSwitch'
-
 export default function DatePickerApp() {
   const [date, setDate] = useState(new Date())
   const [open, setOpen] = useState(false)
@@ -23,41 +20,13 @@ export default function DatePickerApp() {
     return currentDate
   }
 
-  const StyledScrollView = styled.ScrollView`
-    flex: 1;
-    width: 100%;
-  `
-
-  const StyledView = styled.View`
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: 5px;
-    margin-right: 5px;
-    padding: 10px;
-  `
-  const StyledBorder = styled.View`
-    border: 2px;
-    border-color: #dedede;
-    border-style: solid;
-    border-radius: 5px;
-    width: 100%;
-    background: #f5fcff;
-  `
-  const TouchableOpacity = styled.TouchableOpacity`
-    width: 100%;
-  `
-
-  const StyledCheckList = styled.View`
-    padding: 5px;
-  `
-
-  //Not working
-  const StyledSectionHeader = styled.View`
-    font-size: 14px;
-    font-weight: 600;
-  `
-
   const ageObject = calculateAge(date)
+
+  const StyledBirthday = styled.View`
+    align-items: flex-start;
+    margin: 0px 0px 0px 20px;
+    padding-top: 10px;
+  `
 
   return (
     <>
@@ -83,37 +52,17 @@ export default function DatePickerApp() {
         }}
       />
 
-      <Text>Your Baby's date of birth is: {date.toDateString()}</Text>
-      <Text>
-        Your baby is {ageObject.years} year {ageObject.months} months and{' '}
-        {ageObject.days} days old.
-      </Text>
-
-      {/* <B1> TimeLline </B1> */}
-      {BabyChecklist.filter((item) => item.day < 14).map((filteredItem) => {
-        return (
-          <StyledScrollView>
-            <StyledView>
-              <TouchableOpacity>
-                <StyledBorder>
-                  <StyledCheckList>
-                    <StyledSectionHeader>
-                      <Text>{filteredItem.name}</Text>
-                      <ToggleSwitch></ToggleSwitch>
-                    </StyledSectionHeader>
-                  </StyledCheckList>
-                  <StyledCheckList>
-                    <Text>{filteredItem.range}</Text>
-                  </StyledCheckList>
-                  <StyledCheckList>
-                    <Text>{filteredItem.description}</Text>
-                  </StyledCheckList>
-                </StyledBorder>
-              </TouchableOpacity>
-            </StyledView>
-          </StyledScrollView>
-        )
-      })}
+      <StyledBirthday>
+        <Text>Your Baby's date of birth is:</Text>
+        <Text>{date.toDateString()}</Text>
+      </StyledBirthday>
+      <StyledBirthday>
+        <Text>Age: </Text>
+        <Text>
+          {ageObject.years} year {ageObject.months} months and {ageObject.days}{' '}
+          days old.
+        </Text>
+      </StyledBirthday>
     </>
   )
 }

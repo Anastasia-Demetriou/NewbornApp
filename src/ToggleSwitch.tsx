@@ -3,8 +3,9 @@ import { Text, View, StyleSheet, Alert } from 'react-native'
 import { Switch, Button } from 'react-native-paper'
 
 import styled from 'styled-components/native'
+import BabyChecklist from './BabyChecklist'
 
-const ToggleSwitch = () => {
+const ToggleSwitch = (props) => {
   const [switchOn, setSwitchOn] = useState(false)
 
   const onToggleSwitch = () => setSwitchOn(!switchOn)
@@ -19,12 +20,15 @@ const ToggleSwitch = () => {
     <View style={styles.container}>
       <Switch
         value={switchOn}
+        onPress
         onValueChange={() => {
           setSwitchOn(!switchOn)
           //Alert.alert('Switch on : ' + !switchOn)
 
           {
-            switchOn ? <Text>switchOn</Text> : <Text>hide</Text>
+            ;<Text> {switchOn ? 'ON' : 'OFF'} </Text>
+
+            //switchOn ? <Text>switchOn</Text> : <Text>hide</Text>
           }
         }}
       />

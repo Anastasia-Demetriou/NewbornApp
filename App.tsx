@@ -29,6 +29,7 @@ import Config from 'react-native-config'
 import { blue100 } from 'react-native-paper/lib/typescript/styles/colors'
 import ToggleSwitch from './src/ToggleSwitch'
 import Switch from './src/Switch'
+import CardContainer from './src/CardContainer'
 
 console.log(Config)
 
@@ -68,7 +69,7 @@ const App = () => {
   // const isDarkMode = useColorScheme() === 'dark'
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: '#e7e9eb' }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#F2F2F2' }}>
       {/* <LinearGradient
         colors={['#077845', '#077845']}
         style={{
@@ -86,6 +87,7 @@ const App = () => {
         </View>
 
         <DatePickerApp mode='date' />
+        <CardContainer />
       </ScrollView>
       {/* </LinearGradient> */}
     </SafeAreaView>

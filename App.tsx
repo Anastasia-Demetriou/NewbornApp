@@ -8,7 +8,7 @@
  * @format
  */
 
-import React from 'react'
+import React, { useState } from 'react'
 import {
   SafeAreaView,
   ScrollView,
@@ -66,6 +66,7 @@ const Section: React.FC<{
 }
 
 const App = () => {
+  const [show, setShow] = useState(true)
   // const isDarkMode = useColorScheme() === 'dark'
 
   return (
@@ -85,9 +86,14 @@ const App = () => {
             {'\n'}
           </Section>
         </View>
-
         <DatePickerApp mode='date' />
-        <CardContainer />
+        <View>
+          {show ? <CardContainer /> : null}
+
+          <ToggleSwitch onPress={() => setShow(!show)} />
+        </View>
+
+        {/* <CardContainer onPress={() => setShow(!show)} /> */}
       </ScrollView>
       {/* </LinearGradient> */}
     </SafeAreaView>

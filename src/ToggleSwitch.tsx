@@ -7,6 +7,7 @@ import BabyChecklist from './BabyChecklist'
 
 const ToggleSwitch = (props) => {
   const [switchOn, setSwitchOn] = useState(false)
+  const [data, setData] = useState(true)
 
   const onToggleSwitch = () => setSwitchOn(!switchOn)
 
@@ -23,12 +24,14 @@ const ToggleSwitch = (props) => {
         onPress
         onValueChange={() => {
           setSwitchOn(!switchOn)
-          //Alert.alert('Switch on : ' + !switchOn)
+          // Alert.alert('Switch on : ' + !switchOn)
+          // {
+          //   data && <Text> 'test'</Text>
+          // }
 
           {
-            ;<Text> {switchOn ? 'ON' : 'OFF'} </Text>
-
-            //switchOn ? <Text>switchOn</Text> : <Text>hide</Text>
+            //<Text> {switchOn ? 'ON' : 'OFF'} </Text>
+            switchOn ? <Text>switchOn</Text> : <Text>hide</Text>
           }
         }}
       />

@@ -5,38 +5,16 @@ import { Switch, Button } from 'react-native-paper'
 import styled from 'styled-components/native'
 import BabyChecklist from './BabyChecklist'
 
-const ToggleSwitch = (props) => {
-  const [switchOn, setSwitchOn] = useState(false)
-  const [data, setData] = useState(true)
-
-  const onToggleSwitch = () => setSwitchOn(!switchOn)
-
-  //   return (
-  // <View style={styles.container}>
-  //   <Switch value={switchOn} onValueChange={onToggleSwitch}
-  //    />
-  // </View>
-
+const ToggleSwitch = ({ value, onToggle }) => {
   return (
     <View style={styles.container}>
       <Switch
-        value={switchOn}
-        onPress
+        value={value}
         onValueChange={() => {
-          setSwitchOn(!switchOn)
-          // Alert.alert('Switch on : ' + !switchOn)
-          // {
-          //   data && <Text> 'test'</Text>
-          // }
-
-          {
-            //<Text> {switchOn ? 'ON' : 'OFF'} </Text>
-            switchOn ? <Text>switchOn</Text> : <Text>hide</Text>
-          }
+          onToggle()
         }}
       />
     </View>
-    //   )
   )
 }
 

@@ -7,12 +7,18 @@ import BabyChecklist from './BabyChecklist'
 import ToggleSwitch from './ToggleSwitch'
 import Card from './Card'
 
-const CardContainer = () => {
+const CardContainer = ({ age, onPress }) => {
   return (
     <View>
-      {BabyChecklist.filter((item) => item.day < 365).map((filteredItem) => {
+      {BabyChecklist.filter(
+        (item) =>
+          item.year < age.years ||
+          item.month < age.months ||
+          item.day <= age.days
+      ).map((filteredItem) => {
         return (
           <Card
+            onPress={onPress}
             name={filteredItem.name}
             range={filteredItem.range}
             description={filteredItem.description}

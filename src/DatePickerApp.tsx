@@ -6,7 +6,7 @@ import moment from 'moment'
 import styled from 'styled-components/native'
 import { intervalToDuration } from 'date-fns'
 
-export default function DatePickerApp() {
+export default function DatePickerApp({ navigation, onAgeChange }) {
   const [date, setDate] = useState(new Date())
   const [open, setOpen] = useState(false)
 
@@ -32,6 +32,7 @@ export default function DatePickerApp() {
     <>
       <TouchableOpacity>
         <Button title='Select Date' onPress={() => setOpen(true)} />
+        {/* <Button title='Select Date' onPress={() => navigation.push("CardContainer") /> */}
       </TouchableOpacity>
       <DatePicker
         modal
@@ -45,7 +46,8 @@ export default function DatePickerApp() {
         onConfirm={(date) => {
           setOpen(false)
           setDate(date)
-          calculateAge(date)
+          const age = calculateAge(date)
+          onAgeChange(age)
         }}
         onCancel={() => {
           setOpen(false)

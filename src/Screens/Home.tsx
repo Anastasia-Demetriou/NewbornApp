@@ -18,25 +18,17 @@ import {
   useColorScheme,
   View,
   TextInput,
+  Button,
 } from 'react-native'
 
 import { Colors } from 'react-native/Libraries/NewAppScreen'
-import DatePickerApp from './src/DatePickerApp'
+import DatePickerApp from '../DatePickerApp'
 import { Provider as PaperProvider } from 'react-native-paper'
 import LinearGradient from 'react-native-linear-gradient'
+import BabyReminders from './BabyReminders'
 
 import Config from 'react-native-config'
 import { blue100 } from 'react-native-paper/lib/typescript/styles/colors'
-import ToggleSwitch from './src/ToggleSwitch'
-import Switch from './src/Switch'
-import Card from './src/Card'
-import CardContainer from './src/CardContainer'
-
-import Home from './src/Screens/Home'
-import BabyReminders from './src/Screens/BabyReminders'
-
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 console.log(Config)
 
@@ -72,25 +64,49 @@ const Section: React.FC<{
   )
 }
 
-const Stack = createNativeStackNavigator()
-
-const App = () => {
+const Home = ({ navigation }) => {
   // const isDarkMode = useColorScheme() === 'dark'
   const [age, setAge] = useState(0)
 
   console.log({ age })
 
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name='Home' component={Home} />
-        <Stack.Screen
-          name='BabyReminders'
-          component={BabyReminders}
-          initialParams={{ age }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#F2F2F2' }}>
+      {/* <LinearGradient
+         colors={['#077845', '#077845']}
+         style={{
+           flex: 1,
+           justifyContent: 'center',
+           alignItems: 'center',
+         }}
+       > */}
+
+      <ScrollView contentInsetAdjustmentBehavior='automatic'>
+        <View>
+          <Section title='Newborn Planner'>
+            hello, enter your baby's dob:
+            {'\n'}
+          </Section>
+        </View>
+
+        <DatePickerApp mode='date' onAgeChange={setAge} />
+      </ScrollView>
+      {/* </LinearGradient> */}
+
+      <Button
+        title='Go to Details'
+        //onPress={() => navigation.navigate('BabyReminders')}
+        onPress={() => {
+          navigation.navigate('BabyReminders', {
+            age: {
+              year: age.years,
+              months: age.months,
+              days: age.days,
+            },
+          })
+        }}
+      />
+    </SafeAreaView>
   )
 }
 
@@ -116,4 +132,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default App
+export default Home

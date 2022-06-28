@@ -7,6 +7,9 @@ import BabyChecklist from './BabyChecklist'
 import ToggleSwitch from './ToggleSwitch'
 
 const Card = (props) => {
+  const [show, setShow] = useState(true)
+  const onToggleSwitch = () => setShow(!show)
+
   const StyledScrollView = styled.ScrollView`
     flex: 1;
     width: 100%;
@@ -53,15 +56,20 @@ const Card = (props) => {
             <StyledCheckList>
               <StyledSectionHeader>
                 <Text>{props.name}</Text>
-                <ToggleSwitch />
               </StyledSectionHeader>
             </StyledCheckList>
             <StyledCheckList>
               <Text>{props.range}</Text>
+              <ToggleSwitch value={!show} onToggle={onToggleSwitch} />
             </StyledCheckList>
-            <StyledCheckList>
-              <Text>{props.description}</Text>
-            </StyledCheckList>
+
+            {!show && (
+              <>
+                <StyledCheckList>
+                  <Text>{props.description}</Text>
+                </StyledCheckList>
+              </>
+            )}
           </StyledBorder>
         </TouchableOpacity>
       </StyledView>

@@ -9,6 +9,7 @@ import { intervalToDuration } from 'date-fns'
 export default function DatePickerApp({ navigation, onAgeChange }) {
   const [date, setDate] = useState(new Date())
   const [open, setOpen] = useState(false)
+  const [hide, setHide] = useState(false)
 
   const calculateAge = (date) => {
     //const currentDate = moment().diff(date, 'days')
@@ -30,29 +31,34 @@ export default function DatePickerApp({ navigation, onAgeChange }) {
 
   return (
     <>
-      <TouchableOpacity>
-        <Button title='Select Date' onPress={() => setOpen(true)} />
-        {/* <Button title='Select Date' onPress={() => navigation.push("CardContainer") /> */}
-      </TouchableOpacity>
-      <DatePicker
-        modal
-        open={open}
-        date={date}
-        value={date}
-        mode='date'
-        locale='en_GB'
-        minimumDate={new Date(moment().subtract(2, 'years').format())}
-        maximumDate={new Date()}
-        onConfirm={(date) => {
-          setOpen(false)
-          setDate(date)
-          const age = calculateAge(date)
-          onAgeChange(age)
-        }}
-        onCancel={() => {
-          setOpen(false)
-        }}
-      />
+      {!hide && (
+        <>
+          <TouchableOpacity>
+            <Button title='Select Date' onPress={() => setOpen(true)} />
+            {/* <Button title='Select Date' onPress={() => navigation.push("CardContainer") /> */}
+          </TouchableOpacity>
+          <DatePicker
+            modal
+            open={open}
+            date={date}
+            value={date}
+            mode='date'
+            locale='en_GB'
+            minimumDate={new Date(moment().subtract(2, 'years').format())}
+            maximumDate={new Date()}
+            onConfirm={(date) => {
+              setOpen(false)
+              setDate(date)
+              const age = calculateAge(date)
+              onAgeChange(age)
+              setHide(true)
+            }}
+            onCancel={() => {
+              setOpen(false)
+            }}
+          />
+        </>
+      )}
 
       <StyledBirthday>
         <Text>Your Baby's date of birth is:</Text>

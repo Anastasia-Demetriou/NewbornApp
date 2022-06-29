@@ -10,8 +10,7 @@ const Card = (props) => {
   const [show, setShow] = useState(true)
   const onToggleSwitch = () => setShow(!show)
 
-  const StyledScrollView = styled.ScrollView`
-    flex: 1;
+  const StyledScrollView = styled.View`
     width: 100%;
   `
 
@@ -47,6 +46,8 @@ const Card = (props) => {
     font-size: 14px;
     font-weight: 600;
   `
+
+  console.log('Card Render')
 
   return (
     <StyledScrollView>

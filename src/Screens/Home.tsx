@@ -92,20 +92,21 @@ const Home = ({ navigation }) => {
         <DatePickerApp mode='date' onAgeChange={setAge} />
       </ScrollView>
       {/* </LinearGradient> */}
-
-      <Button
-        title='Go to Details'
-        //onPress={() => navigation.navigate('BabyReminders')}
-        onPress={() => {
-          navigation.navigate('BabyReminders', {
-            age: {
-              year: age.years,
-              months: age.months,
-              days: age.days,
-            },
-          })
-        }}
-      />
+      <View style={{ flex: 1 }}>
+        <Button
+          title='Go to Baby Reminders'
+          //onPress={() => navigation.navigate('BabyReminders')}
+          onPress={() => {
+            navigation.navigate('BabyReminders', {
+              age: {
+                year: age.years,
+                months: age.months,
+                days: age.days,
+              },
+            })
+          }}
+        />
+      </View>
     </SafeAreaView>
   )
 }

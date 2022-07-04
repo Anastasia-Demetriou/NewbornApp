@@ -9,7 +9,6 @@ const BabyReminders = ({ navigation, route }) => {
   return (
     <View style={{ flex: 1 }}>
       <CardContainer age={age} onPress={() => {}} />
-      <Button title='Go to Home' onPress={() => navigation.navigate('Home')} />
     </View>
   )
 }

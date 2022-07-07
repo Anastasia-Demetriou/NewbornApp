@@ -1,5 +1,5 @@
 const BabyChecklist = [
-  //object has 2 attributes name and day
+  //object has 5 attributes name, day, month, range, description
   {
     name: ' Heel Prick Blood Test ',
     month: 0,
@@ -29,11 +29,41 @@ const BabyChecklist = [
   },
 
   {
-    name: 'Review',
+    name: 'First round of Immunisations',
+    month: 2,
+    range: '8 weeks',
+    description: '6-in-1 vaccine, Rotavirus vaccine, MenB',
+  },
+
+  {
+    name: 'Second round of Immunisations',
+    month: 3,
+    range: '12 weeks',
+    description:
+      '	6-in-1 vaccine (2nd dose), Pneumococcal (PCV) vaccine, Rotavirus vaccine (2nd dose)',
+  },
+
+  {
+    name: 'Third round of Immunisations',
+    month: 4,
+    range: '16 weeks',
+    description: '	6-in-1 vaccine (3rd dose), MenB (2nd dose)',
+  },
+
+  {
+    name: 'Health Review',
     range: '9-12 months',
     description:
       'During this time, your baby should be offered another review looking at, among other things, language and learning, safety, diet and behaviour.',
     month: 9,
+  },
+
+  {
+    name: 'Forth round of Immunisations',
+    month: 12,
+    range: '1 year',
+    description:
+      '	Hib/MenC (1st dose), MMR (1st dose), Pneumococcal (PCV) vaccine (2nd dose), MenB (3rd dose)',
   },
 ]
 export default BabyChecklist

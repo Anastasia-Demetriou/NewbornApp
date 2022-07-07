@@ -34,6 +34,7 @@ import CardContainer from './src/CardContainer'
 
 import Home from './src/Screens/Home'
 import BabyReminders from './src/Screens/BabyReminders'
+import AboutScreen from './src/Screens/AboutScreen'
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
@@ -89,6 +90,7 @@ const App = () => {
           component={BabyReminders}
           initialParams={{ age }}
         />
+        <Stack.Screen name='AboutScreen' component={AboutScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )

@@ -26,6 +26,7 @@ import DatePickerApp from '../DatePickerApp'
 import { Provider as PaperProvider } from 'react-native-paper'
 import LinearGradient from 'react-native-linear-gradient'
 import BabyReminders from './BabyReminders'
+import AboutScreen from './AboutScreen'
 
 import Config from 'react-native-config'
 import { blue100 } from 'react-native-paper/lib/typescript/styles/colors'
@@ -105,6 +106,11 @@ const Home = ({ navigation }) => {
               },
             })
           }}
+        />
+
+        <Button
+          title='About Page'
+          onPress={() => navigation.navigate('AboutScreen')}
         />
       </View>
     </SafeAreaView>

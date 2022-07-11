@@ -24,6 +24,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen'
 import DatePickerApp from './src/DatePickerApp'
 import { Provider as PaperProvider } from 'react-native-paper'
 import LinearGradient from 'react-native-linear-gradient'
+import 'react-native-gesture-handler'
 
 import Config from 'react-native-config'
 import { blue100 } from 'react-native-paper/lib/typescript/styles/colors'
@@ -38,6 +39,7 @@ import AboutScreen from './src/Screens/AboutScreen'
 
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { createDrawerNavigator } from '@react-navigation/drawer'
 
 console.log(Config)
 
@@ -74,6 +76,7 @@ const Section: React.FC<{
 }
 
 const Stack = createNativeStackNavigator()
+const Drawer = createDrawerNavigator()
 
 const App = () => {
   // const isDarkMode = useColorScheme() === 'dark'
@@ -83,16 +86,37 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name='Home' component={Home} />
-        <Stack.Screen
-          name='BabyReminders'
+      <Drawer.Navigator
+        drawerContentOptions={{
+          activeTintColor: '#e91e63',
+          itemStyle: { marginVertical: 5 },
+        }}
+      >
+        <Drawer.Screen
+          name='Home'
+          options={{ drawerLabel: 'Home' }}
+          component={Home}
+        />
+        <Drawer.Screen
+          name='Baby Reminders'
           component={BabyReminders}
           initialParams={{ age }}
         />
-        <Stack.Screen name='AboutScreen' component={AboutScreen} />
-      </Stack.Navigator>
+        <Drawer.Screen name='About Screen' component={AboutScreen} />
+      </Drawer.Navigator>
     </NavigationContainer>
+
+    // <NavigationContainer>
+    //   <Stack.Navigator>
+    //     <Stack.Screen name='Home' component={Home} />
+    //     <Stack.Screen
+    //       name='BabyReminders'
+    //       component={BabyReminders}
+    //       initialParams={{ age }}
+    //     />
+    //     <Stack.Screen name='AboutScreen' component={AboutScreen} />
+    //   </Stack.Navigator>
+    // </NavigationContainer>
   )
 }
 

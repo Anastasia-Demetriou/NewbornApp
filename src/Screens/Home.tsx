@@ -108,10 +108,10 @@ const Home = ({ navigation }) => {
           }}
         />
 
-        <Button
+        {/* <Button
           title='About Page'
           onPress={() => navigation.navigate('AboutScreen')}
-        />
+        /> */}
       </View>
     </SafeAreaView>
   )

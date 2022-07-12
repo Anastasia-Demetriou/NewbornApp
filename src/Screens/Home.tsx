@@ -38,6 +38,7 @@ const Section: React.FC<{
   title: string
 }> = ({ children, title }) => {
   const isDarkMode = useColorScheme() === 'dark'
+
   return (
     <View style={styles.sectionContainer}>
       <Text
@@ -69,6 +70,7 @@ const Section: React.FC<{
 const Home = ({ navigation }) => {
   // const isDarkMode = useColorScheme() === 'dark'
   const [age, setAge] = useState(0)
+  const [hide, setHide] = useState(false)
 
   console.log({ age })
 
@@ -91,26 +93,33 @@ const Home = ({ navigation }) => {
           </Section>
         </View>
 
-        <DatePickerApp mode='date' onAgeChange={setAge} />
+        <DatePickerApp
+          mode='date'
+          onAgeChange={setAge}
+          setHide={setHide}
+          hide={hide}
+        />
       </ScrollView>
       {/* </LinearGradient> */}
       <View style={{ flex: 1 }}>
-        <Pressable
-          style={styles.button}
-          //title='Go to Baby Reminders'
-          //onPress={() => navigation.navigate('BabyReminders')}
-          onPress={() => {
-            navigation.navigate('BabyReminders', {
-              age: {
-                year: age.years,
-                months: age.months,
-                days: age.days,
-              },
-            })
-          }}
-        >
-          <Text style={styles.text}>See your Baby Reminders</Text>
-        </Pressable>
+        {hide && (
+          <Pressable
+            style={styles.button}
+            //title='Go to Baby Reminders'
+            //onPress={() => navigation.navigate('BabyReminders')}
+            onPress={() => {
+              navigation.navigate('BabyReminders', {
+                age: {
+                  year: age.years,
+                  months: age.months,
+                  days: age.days,
+                },
+              })
+            }}
+          >
+            <Text style={styles.text}>See your Baby Reminders</Text>
+          </Pressable>
+        )}
 
         {/* <Button
           title='About Page'

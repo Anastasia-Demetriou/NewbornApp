@@ -13,11 +13,14 @@ import moment from 'moment'
 import styled from 'styled-components/native'
 import { intervalToDuration } from 'date-fns'
 
-export default function DatePickerApp({ navigation, onAgeChange }) {
+export default function DatePickerApp({
+  navigation,
+  onAgeChange,
+  setHide,
+  hide,
+}) {
   const [date, setDate] = useState(new Date())
   const [open, setOpen] = useState(false)
-  const [hide, setHide] = useState(false)
-  const [show, setShow] = useState(true)
 
   const calculateAge = (date) => {
     //const currentDate = moment().diff(date, 'days')

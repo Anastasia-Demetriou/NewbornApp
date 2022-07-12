@@ -6,7 +6,7 @@ const BabyChecklist = [
     day: 8,
     range: ' 5-8 days after baby is born',
     description:
-      "Your midwife will take a very small sample of your baby's blood by pricking their heel. This will be tested to check your baby is healthy.",
+      "Your midwife will take a very small sample of your baby's blood by pricking their heel. \n\nThis will be tested to check your baby is healthy. \n",
   },
 
   {
@@ -15,7 +15,7 @@ const BabyChecklist = [
     day: 7,
     range: '7 - 14 days old',
     description:
-      'A health visitor will do a new baby review within 10 to 14 days of the birth. They can give you advice on: Safe sleeping, vaccinations, feeding your baby (breastfeeding and bottle feeding), adjusting to life as a new parent, your baby development',
+      "A health visitor will do a new baby review within 10 to 14 days of the birth. \n\nThey can give you advice on: \n\nSafe sleeping, vaccinations, feeding your baby (breastfeeding and bottle feeding), adjusting to life as a new parent, your baby's development.",
   },
   {
     name: 'New Baby Review',
@@ -23,7 +23,7 @@ const BabyChecklist = [
     month: 0,
     day: 14,
     description:
-      'Your health visitor will carry out a new baby review with you and your partner within 10 to 14 days of their birth. Theyll work with you on becoming parents and how to keep your baby safe and healthy. You and your partner will also be offered support with breastfeeding if you have chosen to do it',
+      "Your health visitor will carry out a new baby review with you and your partner within 10 to 14 days of their birth. \n\nThey'll work with you on becoming parents and how to keep your baby safe and healthy. You and your partner will also be offered support with breastfeeding if you have chosen to do it",
   },
   {
     name: 'Hearing Test',
@@ -38,7 +38,7 @@ const BabyChecklist = [
     name: 'Physical Examination',
     range: '6-8 weeks',
     description:
-      'Your baby will be invited for a thorough physical examination. This is usually done by a GP. Your babys eyes, heart, hips and – for boys – testicles will be checked. Theyll also have their weight, length and head circumference measured. A GP or health visitor will discuss your babys vaccinations with you. These are offered at 8 weeks, 12 weeks, 16 weeks and 12 months old, and before your child starts school. Theyll also ask you how youve been feeling emotionally and physically since the birth of your baby.',
+      "Your baby will be invited for a thorough physical examination. This is usually done by a GP. \n\nYour baby's eyes, heart, hips and – for boys – testicles will be checked. They'll also have their weight, length and head circumference measured. \n\nA GP or health visitor will discuss your babys vaccinations with you. These are offered at 8 weeks, 12 weeks, 16 weeks and 12 months old, and before your child starts school. Theyll also ask you how you've been feeling emotionally and physically since the birth of your baby.",
     month: 0,
     day: 42,
   },
@@ -57,7 +57,7 @@ const BabyChecklist = [
     day: 84,
     range: '3 Months Old',
     description:
-      '	6-in-1 vaccine (2nd dose), Pneumococcal (PCV) vaccine, Rotavirus vaccine (2nd dose)',
+      '6-in-1 vaccine (2nd dose), Pneumococcal (PCV) vaccine, Rotavirus vaccine (2nd dose)',
   },
 
   {
@@ -65,7 +65,7 @@ const BabyChecklist = [
     month: 0,
     day: 112,
     range: '4 months Old',
-    description: '	6-in-1 vaccine (3rd dose), MenB (2nd dose)',
+    description: '6-in-1 vaccine (3rd dose), MenB (2nd dose)',
   },
 
   {
@@ -83,7 +83,7 @@ const BabyChecklist = [
     day: 365,
     range: '1 Year Old',
     description:
-      '	Hib/MenC (1st dose), MMR (1st dose), Pneumococcal (PCV) vaccine (2nd dose), MenB (3rd dose)',
+      'Hib/MenC (1st dose), MMR (1st dose), Pneumococcal (PCV) vaccine (2nd dose), MenB (3rd dose)',
   },
 ]
 export default BabyChecklist

@@ -1,13 +1,20 @@
-import { createDrawerNavigator } from '@react-navigation/drawer'
-import { NavigationContainer } from '@react-navigation/native'
+import React from 'react'
+import { Text, View, Button } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
-import AboutStack from './AboutStack'
+import AboutScreen from './Screens/AboutScreen'
 
-const navigation = useNavigation()
-const MenuDrawer = createDrawerNavigator({
-   
-    {
-        onPress: () => navigation.navigate('About'),
-    },
+const MenuDrawer = ({ navigation }) => {
+  //const navigation = useNavigation()
 
-export default MenuDrawer;
+  return (
+    <View>
+      <Button
+        title='About Page'
+        onPress={() => navigation.navigate('AboutScreen')}
+      />
+    </View>
+  )
+}
+
+export default MenuDrawer

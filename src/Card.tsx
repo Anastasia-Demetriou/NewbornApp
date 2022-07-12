@@ -11,6 +11,7 @@ const Card = (props) => {
   const onToggleSwitch = () => setShow(!show)
 
   const StyledScrollView = styled.View`
+    margin-top: 10px;
     width: 100%;
   `
 
@@ -38,13 +39,22 @@ const Card = (props) => {
   `
 
   const StyledCheckList = styled.View`
+    padding: 7px;
+    margin-left: 10px;
+  `
+  const StyledCard = styled.View`
     padding: 5px;
+    margin-left: 12px;
   `
 
-  //Not working
-  const StyledSectionHeader = styled.View`
-    font-size: 14px;
-    font-weight: 600;
+  const StyledToggle = styled.View`
+    padding-bottom: 10px;
+    padding-right: 10px;
+  `
+
+  const StyledDescription = styled.View`
+    padding: 20px;
+    padding-bottom: 15px;
   `
 
   console.log('Card Render')
@@ -55,20 +65,24 @@ const Card = (props) => {
         <TouchableOpacity>
           <StyledBorder>
             <StyledCheckList>
-              <StyledSectionHeader>
-                <Text>{props.name}</Text>
-              </StyledSectionHeader>
+              <Text style={{ fontWeight: 'bold', color: '#1a7067' }}>
+                {props.name}
+              </Text>
             </StyledCheckList>
-            <StyledCheckList>
+            <StyledCard>
               <Text>{props.range}</Text>
+            </StyledCard>
+            <StyledToggle>
               <ToggleSwitch value={!show} onToggle={onToggleSwitch} />
-            </StyledCheckList>
+            </StyledToggle>
 
             {!show && (
               <>
-                <StyledCheckList>
-                  <Text>{props.description}</Text>
-                </StyledCheckList>
+                <StyledDescription>
+                  <Text style={{ textAlign: 'justify' }}>
+                    {props.description}
+                  </Text>
+                </StyledDescription>
               </>
             )}
           </StyledBorder>

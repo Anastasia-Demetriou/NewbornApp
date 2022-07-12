@@ -40,40 +40,41 @@ import AboutScreen from './src/Screens/AboutScreen'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createDrawerNavigator } from '@react-navigation/drawer'
+import MenuDrawer from './src/MenuDrawer'
 
 console.log(Config)
 
-const Section: React.FC<{
-  title: string
-}> = ({ children, title }) => {
-  const isDarkMode = useColorScheme() === 'dark'
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}
-      >
-        {title}
-      </Text>
-      {
-        <Text
-          style={[
-            styles.sectionDescription,
-            {
-              color: isDarkMode ? Colors.light : Colors.dark,
-            },
-          ]}
-        >
-          {children}
-        </Text>
-      }
-    </View>
-  )
-}
+// const Section: React.FC<{
+//   title: string
+// }> = ({ children, title }) => {
+//   const isDarkMode = useColorScheme() === 'dark'
+//   return (
+//     <View style={styles.sectionContainer}>
+//       <Text
+//         style={[
+//           styles.sectionTitle,
+//           {
+//             color: isDarkMode ? Colors.white : Colors.black,
+//           },
+//         ]}
+//       >
+//         {title}
+//       </Text>
+//       {
+//         <Text
+//           style={[
+//             styles.sectionDescription,
+//             {
+//               color: isDarkMode ? Colors.light : Colors.dark,
+//             },
+//           ]}
+//         >
+//           {children}
+//         </Text>
+//       }
+//     </View>
+//   )
+// }
 
 const Stack = createNativeStackNavigator()
 const Drawer = createDrawerNavigator()
@@ -87,9 +88,8 @@ const App = () => {
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        drawerContentOptions={{
-          activeTintColor: '#e91e63',
-          itemStyle: { marginVertical: 5 },
+        screenOptions={{
+          drawerActiveBackgroundColor: '#3fe0d0',
         }}
       >
         <Drawer.Screen
@@ -98,7 +98,7 @@ const App = () => {
           component={Home}
         />
         <Drawer.Screen
-          name='Baby Reminders'
+          name='BabyReminders'
           component={BabyReminders}
           initialParams={{ age }}
         />

@@ -16,10 +16,9 @@ const AboutScreen = ({ navigation }) => {
 
   return (
     <StyledScrollView>
-      <Text> About Screen </Text>
       <AboutCard />
 
-      <Button title='Go back' onPress={() => navigation.navigate('Home')} />
+      {/* <Button title='Go back' onPress={() => navigation.navigate('Home')} /> */}
     </StyledScrollView>
   )
 }

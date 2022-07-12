@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { Button, Text, View, TouchableOpacity } from 'react-native'
+import {
+  Button,
+  Text,
+  View,
+  TouchableOpacity,
+  StyleSheet,
+  Pressable,
+} from 'react-native'
 
 import DatePicker from 'react-native-date-picker'
 import moment from 'moment'
@@ -10,6 +17,7 @@ export default function DatePickerApp({ navigation, onAgeChange }) {
   const [date, setDate] = useState(new Date())
   const [open, setOpen] = useState(false)
   const [hide, setHide] = useState(false)
+  const [show, setShow] = useState(true)
 
   const calculateAge = (date) => {
     //const currentDate = moment().diff(date, 'days')
@@ -33,10 +41,19 @@ export default function DatePickerApp({ navigation, onAgeChange }) {
     <>
       {!hide && (
         <>
-          <TouchableOpacity>
-            <Button title='Select Date' onPress={() => setOpen(true)} />
-            {/* <Button title='Select Date' onPress={() => navigation.push("CardContainer") /> */}
-          </TouchableOpacity>
+          <View>
+            <TouchableOpacity>
+              <Pressable style={styles.button} onPress={() => setOpen(true)}>
+                <Text style={styles.text}>Birth Date</Text>
+              </Pressable>
+            </TouchableOpacity>
+          </View>
+
+          {/* <StyledButton>
+              <Button title='Select date' onPress={() => setOpen(true)} />
+            </StyledButton> */}
+          {/* <Button title='Select Date' onPress={() => navigation.push("CardContainer") /> */}
+
           <DatePicker
             modal
             open={open}
@@ -60,19 +77,40 @@ export default function DatePickerApp({ navigation, onAgeChange }) {
         </>
       )}
 
-      <StyledBirthday>
-        <Text>Your Baby's date of birth is:</Text>
-        <Text>{date.toDateString()}</Text>
-      </StyledBirthday>
-      <StyledBirthday>
-        <Text>Age: </Text>
-        <Text>
-          {ageObject.years} year {ageObject.months} months and {ageObject.days}{' '}
-          days old.
-        </Text>
-      </StyledBirthday>
+      {/* <Text style={{ fontWeight: 'bold', color: '#1a7067', fontSize: 25 }}>
+          {date.toDateString()}
+        </Text> */}
+
+      {hide && (
+        <StyledBirthday>
+          <Text style={{ fontWeight: 'bold', color: '#1a7067', fontSize: 25 }}>
+            {ageObject.years} year {ageObject.months} months and{' '}
+            {ageObject.days} days old
+          </Text>
+        </StyledBirthday>
+      )}
     </>
   )
 }
+
+const styles = StyleSheet.create({
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: '#3fe0d0',
+    margin: 20,
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
+  },
+})
 
 //age = todays date subtracted by date of birth

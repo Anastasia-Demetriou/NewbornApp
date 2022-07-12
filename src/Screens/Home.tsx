@@ -19,6 +19,7 @@ import {
   View,
   TextInput,
   Button,
+  Pressable,
 } from 'react-native'
 
 import { Colors } from 'react-native/Libraries/NewAppScreen'
@@ -94,8 +95,9 @@ const Home = ({ navigation }) => {
       </ScrollView>
       {/* </LinearGradient> */}
       <View style={{ flex: 1 }}>
-        <Button
-          title='Go to Baby Reminders'
+        <Pressable
+          style={styles.button}
+          //title='Go to Baby Reminders'
           //onPress={() => navigation.navigate('BabyReminders')}
           onPress={() => {
             navigation.navigate('BabyReminders', {
@@ -106,7 +108,9 @@ const Home = ({ navigation }) => {
               },
             })
           }}
-        />
+        >
+          <Text style={styles.text}>See your Baby Reminders</Text>
+        </Pressable>
 
         {/* <Button
           title='About Page'
@@ -136,6 +140,23 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    borderRadius: 4,
+    elevation: 3,
+    backgroundColor: '#3fe0d0',
+    margin: 20,
+  },
+  text: {
+    fontSize: 16,
+    lineHeight: 21,
+    fontWeight: 'bold',
+    letterSpacing: 0.25,
+    color: 'white',
   },
 })
 

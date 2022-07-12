@@ -42,12 +42,6 @@ const AboutCard = (props) => {
     padding: 5px;
   `
 
-  //Not working
-  const StyledSectionHeader = styled.View`
-    font-size: 14px;
-    font-weight: 600;
-  `
-
   console.log('Card Render')
 
   return (
@@ -56,30 +50,36 @@ const AboutCard = (props) => {
         <TouchableOpacity>
           <StyledBorder>
             <StyledCheckList>
-              <StyledSectionHeader>
-                <Text>About </Text>
-                <Text>
-                  {'\n'}
-                  The paper red book, despite containing important content,
-                  often ended up at the bottom of a drawer – or worse, lost,
-                  once it was no longer in active use. {'\n'}
-                  {'\n'}
-                  Stories from GPs and Health Visitors showed that many parents
-                  lost their paper red books before their children went to
-                  school. Those who didn't had lost them by the time it came to
-                  fill out university application forms and they knocked on the
-                  door of their GP surgeries for new copies.
-                  {'\n'}
-                  {'\n'}
-                  That is why I decided to go on a mission to provide every
-                  parent in the UK with a more engaging, digital copy of their
-                  red book. Here you read important guidance from the NHS and
-                  other sources. In time, this app will become a virtual
-                  keepsake that contains not only health information (such as
-                  immunisations and screening results) but also photos, notes
-                  and other information about your child.{'\n'}
-                </Text>
-              </StyledSectionHeader>
+              <Text
+                style={{
+                  fontWeight: 'bold',
+                  color: '#1a7067',
+                  textAlign: 'justify',
+                }}
+              >
+                About{' '}
+              </Text>
+              <Text>
+                {'\n'}
+                The paper red book, despite containing important content, often
+                ended up at the bottom of a drawer – or worse, lost, once it was
+                no longer in active use. {'\n'}
+                {'\n'}
+                Stories from GPs and Health Visitors showed that many parents
+                lost their paper red books before their children went to school.
+                Those who didn't had lost them by the time it came to fill out
+                university application forms and they knocked on the door of
+                their GP surgeries for new copies.
+                {'\n'}
+                {'\n'}
+                That is why I decided to go on a mission to provide every parent
+                in the UK with a more engaging, digital copy of their red book.
+                Here you read important guidance from the NHS and other sources.
+                In time, this app will become a virtual keepsake that contains
+                not only health information (such as immunisations and screening
+                results) but also photos, notes and other information about your
+                child.{'\n'}
+              </Text>
             </StyledCheckList>
           </StyledBorder>
         </TouchableOpacity>
@@ -88,20 +88,28 @@ const AboutCard = (props) => {
         <TouchableOpacity>
           <StyledBorder>
             <StyledCheckList>
-              <StyledSectionHeader>
-                <Text>Contact us </Text>
-
-                <Text>SVGs will go here</Text>
+              <StyledCheckList>
+                <Text style={{ fontWeight: 'bold', color: '#1a7067' }}>
+                  Contact us{' '}
+                </Text>
+                <Text>80 Charlotte street </Text>
+                <Text>London </Text>
+                <Text>W1 2EW </Text>
+              </StyledCheckList>
+              <StyledCheckList>
+                <Text style={{ fontWeight: 'bold', color: '#1a7067' }}>
+                  Find Further Info here:{' '}
+                </Text>
 
                 <Text
                   style={styles.hyperlinkStyle}
                   onPress={() => {
-                    Linking.openURL('https://aboutreact.com')
+                    Linking.openURL('https://www.nhs.uk/conditions/baby/')
                   }}
                 >
-                  Link Test
+                  NHS
                 </Text>
-              </StyledSectionHeader>
+              </StyledCheckList>
             </StyledCheckList>
           </StyledBorder>
         </TouchableOpacity>
